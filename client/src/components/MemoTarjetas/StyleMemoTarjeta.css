@@ -9,7 +9,10 @@
     height: 100%;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    border-radius: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .memo-tarjeta-inner{
@@ -25,17 +28,12 @@
     background-color: #EF626C;
     transform: rotateY(180deg);
     box-shadow: 5px 5px 10px 0px rgb(0 0 0 / 50%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     font-size: 60px;
 }
 
 .memo-tarjeta-front{
     background-color: #84DCCF;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
 }
 .memo-tarjeta-front-logo{
     max-width: 86%;

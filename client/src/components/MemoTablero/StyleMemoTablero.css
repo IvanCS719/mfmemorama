@@ -2,6 +2,6 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
-    max-width: 680px;
+    max-width: 750px;
     margin: 100px auto;
 }
