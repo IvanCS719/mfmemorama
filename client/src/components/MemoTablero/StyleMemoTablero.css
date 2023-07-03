@@ -1,7 +1,7 @@
 .memoTablero{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 10px;
-    max-width: 600px;
+    max-width: 680px;
     margin: 100px auto;
 }

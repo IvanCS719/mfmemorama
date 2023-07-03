@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import MemoTablero from './MemoTablero';
+import sonidoParEncontrado from '../../assets/sounds/successAudio.mp3'
 
 //Arreglo local con contenido de prueba para cada tarjeta
-const contenidoList = [...'🤖🦖🐒🦜🐓🥭🍅🥑']
+const contenidoList = [...'🤖🦖🐒🦜🐓🥭🍅🥑🌞🌜'];
+const successAudio = new Audio(sonidoParEncontrado);
 
 function MemoLogica() {
   //constante para almacenar el contenido del memorama mezclado
@@ -11,6 +13,8 @@ function MemoLogica() {
   const [tarjetaSeleccionada, setTarjetaSeleccionada] = useState(null);
   //constante para controlar la animación de ver las dos cartas que el usuario volteó
   const [animacion, setAnimacion] = useState(false);
+
+  const [tarjetasEncontradas, setTarjetasEncontradas] = useState(0);
 
   /*función que recibe un arreglo del contenido del memorama duplicado 
   y retorna el mismo arreglo con los elemento mezclados*/
@@ -53,6 +57,11 @@ function MemoLogica() {
     y si son iguales, las tarjetas quedan giradas y se setea tarjetaSeleccionada a null*/
     else if (tarjetaSeleccionada.contenido === memoTarjeta.contenido) {
       setTarjetaSeleccionada(null);
+      setTarjetasEncontradas(tarjetasEncontradas+1);
+      //successAudio.ended();
+      successAudio.currentTime = 0;
+      successAudio.play();
+    
     }
     /*si no son iguales, se setea animacion a true, se hace una pausa donde las
     tarjetas se muestran por un 1seg. además de que ambas tarjetas vuelven a su estado inicial,
@@ -67,7 +76,14 @@ function MemoLogica() {
         setAnimacion(false);
       }, 1000);
     }
+
+  };
+  
+  if (tarjetasEncontradas === contenidoList.length) {
+    console.log("Ganaste");
   }
+ 
+  console.log(barajearTarjetas)
 
   return (
     //Se pasan la props a tablero

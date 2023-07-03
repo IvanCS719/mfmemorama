@@ -9,7 +9,7 @@
     height: 100%;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    border-radius: 4px;
+    border-radius: 10px;
 }
 
 .memo-tarjeta-inner{
@@ -33,6 +33,12 @@
 
 .memo-tarjeta-front{
     background-color: #84DCCF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.memo-tarjeta-front-logo{
+    max-width: 86%;
 }
 
 .memo-tarjeta-Girada{
