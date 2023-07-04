@@ -3,7 +3,7 @@ import MemoTablero from './MemoTablero';
 import sonidoParEncontrado from '../../assets/sounds/successAudio.mp3'
 
 //Arreglo local con contenido de prueba para cada tarjeta
-const contenidoList = [...'🤖🦖🐒🦜🐓🥭🍅🥑🌞🌜'];
+const contenidoList = [...'🐒🦜🐓🥭🍅🥑🌞🌜'];
 const successAudio = new Audio(sonidoParEncontrado);
 
 function MemoLogica() {
@@ -57,11 +57,14 @@ function MemoLogica() {
     y si son iguales, las tarjetas quedan giradas y se setea tarjetaSeleccionada a null*/
     else if (tarjetaSeleccionada.contenido === memoTarjeta.contenido) {
       setTarjetaSeleccionada(null);
-      setTarjetasEncontradas(tarjetasEncontradas+1);
+      setTarjetasEncontradas((tarjetasEncontradas) => tarjetasEncontradas + 1);
       //successAudio.ended();
+      successAudio.volume = 0.5;
       successAudio.currentTime = 0;
       successAudio.play();
-    
+
+
+
     }
     /*si no son iguales, se setea animacion a true, se hace una pausa donde las
     tarjetas se muestran por un 1seg. además de que ambas tarjetas vuelven a su estado inicial,
@@ -78,11 +81,10 @@ function MemoLogica() {
     }
 
   };
-  
+
   if (tarjetasEncontradas === contenidoList.length) {
     console.log("Ganaste");
   }
- 
   console.log(barajearTarjetas)
 
   return (
