@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import MemoTablero from './MemoTablero';
+import MemoHUB from '../MemoHUD/MemoHUD';
 import sonidoParEncontrado from '../../assets/sounds/successAudio.mp3'
 
 //Arreglo local con contenido de prueba para cada tarjeta
-const contenidoList = [...'🐒🦜🐓🥭🍅🥑🌞🌜'];
+const contenidoList = ['choco_1.jpg', 'choco_2.jpg', 'choco_3.jpg', 'choco_4.jpg', 'choco_5.jpg', 'choco_6.jpg',
+  'choco_7.jpg', 'choco_8.jpg', 'gato.jpg',
+  'perro.jpg'];
 const successAudio = new Audio(sonidoParEncontrado);
 
 function MemoLogica() {
@@ -15,6 +18,9 @@ function MemoLogica() {
   const [animacion, setAnimacion] = useState(false);
 
   const [tarjetasEncontradas, setTarjetasEncontradas] = useState(0);
+
+
+  const [movimientos, setMovimientos] = useState(0);
 
   /*función que recibe un arreglo del contenido del memorama duplicado 
   y retorna el mismo arreglo con los elemento mezclados*/
@@ -62,7 +68,7 @@ function MemoLogica() {
       successAudio.volume = 0.5;
       successAudio.currentTime = 0;
       successAudio.play();
-
+      setMovimientos((movimientos => movimientos + 1));
 
 
     }
@@ -78,6 +84,7 @@ function MemoLogica() {
         setTarjetaSeleccionada(null);
         setAnimacion(false);
       }, 1000);
+      setMovimientos((movimientos => movimientos + 1));
     }
 
   };
@@ -89,7 +96,11 @@ function MemoLogica() {
 
   return (
     //Se pasan la props a tablero
-    <MemoTablero contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} />
+    <main className='w-full min-h-screen flex items-center justify-center flex-col p-2'>
+      <MemoHUB movimientos={movimientos}/>
+      <MemoTablero contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} />
+    </main>
+
   );
 }
 
