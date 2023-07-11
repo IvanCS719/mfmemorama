@@ -19,8 +19,10 @@ function MemoLogica() {
 
   const [tarjetasEncontradas, setTarjetasEncontradas] = useState(0);
 
-
+  //Sistema de puntos
   const [movimientos, setMovimientos] = useState(0);
+  const [puntos, setPuntos] = useState(0);
+  const [combo, setCombo] = useState(0);
 
   /*función que recibe un arreglo del contenido del memorama duplicado 
   y retorna el mismo arreglo con los elemento mezclados*/
@@ -68,9 +70,9 @@ function MemoLogica() {
       successAudio.volume = 0.5;
       successAudio.currentTime = 0;
       successAudio.play();
-      setMovimientos((movimientos => movimientos + 1));
-
-
+      setMovimientos((movimientos) => movimientos + 1);
+      setCombo((combo) => combo + 1)
+      //setPuntos((puntos) => puntos + 50);
     }
     /*si no son iguales, se setea animacion a true, se hace una pausa donde las
     tarjetas se muestran por un 1seg. además de que ambas tarjetas vuelven a su estado inicial,
@@ -84,20 +86,30 @@ function MemoLogica() {
         setTarjetaSeleccionada(null);
         setAnimacion(false);
       }, 1000);
-      setMovimientos((movimientos => movimientos + 1));
+      setMovimientos((movimientos) => movimientos + 1);
+      setCombo(0);
     }
 
   };
 
-  if (tarjetasEncontradas === contenidoList.length) {
-    console.log("Ganaste");
-  }
-  console.log(barajearTarjetas)
+    useEffect(() => {
+      if (combo > 0) {
+        setPuntos((puntos) => puntos + 50 * combo);
+      }
+    }, [combo]);
+
+    useEffect(() => {
+      if (tarjetasEncontradas === contenidoList.length) {
+        console.log("Ganaste");
+      }
+    }, [tarjetasEncontradas]);
+  
+  //console.log(barajearTarjetas)
 
   return (
     //Se pasan la props a tablero
     <main className='w-full min-h-screen flex items-center justify-center flex-col p-2'>
-      <MemoHUB movimientos={movimientos}/>
+      <MemoHUB movimientos={movimientos} puntos={puntos}/>
       <MemoTablero contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} />
     </main>
 
