@@ -14,7 +14,8 @@ function MemoTablero({ contenidoBarajeado, animacion, handleMemoClick }) {
     
     return (
         
-        <div className='grid gap-1 md:gap-2 w-full mfsm:w-[440px] sm:w-[520px] md:w-[720px] mflg:w-[520px] lg:w-[750px]' style={styleMemoTablero}>
+        <div className='w-full flex items-center justify-center'>
+            <div className='grid gap-1 md:gap-2 w-full mfsm:w-[440px] sm:w-[520px] md:w-[720px] mflg:w-[520px] lg:w-[750px]' style={styleMemoTablero}>
             {
                 //sea mapea el arreglo con el contenido de la tarjetas, para crear cada tarjeta
                 contenidoBarajeado.map((item, i) => {
@@ -22,6 +23,7 @@ function MemoTablero({ contenidoBarajeado, animacion, handleMemoClick }) {
                     return <MemoTarjetas key={`${i}_${item}`} memoTarjeta={item} animacion={animacion} handleMemoClick={handleMemoClick} />
                 })
             }
+        </div>
         </div>
     );
 }
