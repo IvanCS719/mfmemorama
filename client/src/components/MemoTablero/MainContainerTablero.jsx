@@ -20,7 +20,7 @@ function MemoLogica() {
 
   const [tarjetasEncontradas, setTarjetasEncontradas] = useState(0);
 
-  let gano = false;
+  const [gano, setGano] = useState(true);
 
   //Sistema de puntos
   const [movimientos, setMovimientos] = useState(0);
@@ -64,7 +64,7 @@ function MemoLogica() {
   useEffect(() => {
     if (tarjetasEncontradas === contenidoList.length) {
       pausarCronometro();
-      gano = true;
+     setGano(true);
     }
   }, [tarjetasEncontradas]);
 
@@ -154,7 +154,7 @@ function MemoLogica() {
   return (
     //Se pasan la props a tablero
     <main className='w-full min-h-screen flex items-center justify-center flex-col p-2'>
-      {true ? <MemoWin/> : null}
+      {gano ? <MemoWin/> : null}
       
       <MemoHUB movimientos={movimientos} puntos={puntos} obtenerFormatoTiempo={obtenerFormatoTiempo()} pausarJuego={pausarJuego}/>
       <MemoTablero contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} />

@@ -11,6 +11,10 @@ export default {
         'lg': '1024px',
         'xl': '1280px',
       },
+      fontFamily: {
+        'fontGeneral': ['Fredoka', 'sans-serif'],
+        'fontTitle': ['Luckiest Guy', 'sans-serif'],
+      }
     },
   },
   plugins: [],
