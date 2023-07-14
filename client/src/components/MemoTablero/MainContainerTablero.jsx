@@ -20,12 +20,16 @@ function MemoLogica() {
 
   const [tarjetasEncontradas, setTarjetasEncontradas] = useState(0);
 
-  const [gano, setGano] = useState(true);
+  const [gano, setGano] = useState(false);
 
   //Sistema de puntos
   const [movimientos, setMovimientos] = useState(0);
   const [puntos, setPuntos] = useState(0);
   const [combo, setCombo] = useState(0);
+  const [totalP, setTotalP] = useState(0);
+  const [totalTiempo, setTotalTiempo] = useState(0);
+  const [totalMovimiento, setTotalMovimiento] = useState(0);
+
 
   //Sistama de timer
   const [tiempo, setTiempo] = useState(0);
@@ -64,6 +68,7 @@ function MemoLogica() {
   useEffect(() => {
     if (tarjetasEncontradas === contenidoList.length) {
       pausarCronometro();
+      calculatePuntos();
      setGano(true);
     }
   }, [tarjetasEncontradas]);
@@ -102,6 +107,14 @@ function MemoLogica() {
     setAnimacion(true);
     clearInterval(intervalRef.current);
   };
+
+  const calculatePuntos = () =>{
+    const totalTiempoPre = Math.max(500 - (5 * Math.floor(tiempo - 30)), 0);
+    const totalMovimientoPre = Math.max(270 - (6 * Math.floor(movimientos - contenidoList.length)), 0);
+    setTotalTiempo(totalTiempoPre);
+    setTotalMovimiento(totalMovimientoPre);
+    setTotalP(puntos + totalTiempoPre + totalMovimientoPre);
+  }
 
   //función que se llama al hacer click en alguna tarjeta y recibe un objeto (con los datos de la tarjeta)
   const handleMemoClick = memoTarjeta => {
@@ -154,7 +167,7 @@ function MemoLogica() {
   return (
     //Se pasan la props a tablero
     <main className='w-full min-h-screen flex items-center justify-center flex-col p-2'>
-      {gano ? <MemoWin/> : null}
+      {gano ? <MemoWin puntos={puntos} totalP={totalP} totalTiempo={totalTiempo} totalMovimiento={totalMovimiento} /> : null}
       
       <MemoHUB movimientos={movimientos} puntos={puntos} obtenerFormatoTiempo={obtenerFormatoTiempo()} pausarJuego={pausarJuego}/>
       <MemoTablero contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} />
