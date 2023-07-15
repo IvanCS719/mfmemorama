@@ -12,8 +12,7 @@ export default {
         'xl': '1280px',
       },
       fontFamily: {
-        'fontGeneral': ['Fredoka', 'sans-serif'],
-        'fontTitle': ['Luckiest Guy', 'sans-serif'],
+        'fontGeneral': ['Fredoka', 'sans-serif']
       }
     },
   },

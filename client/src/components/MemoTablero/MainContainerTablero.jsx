@@ -2,13 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 import MemoTablero from './MemoTablero';
 import MemoHUB from '../MemoHUD/MemoHUD';
 import MemoWin from '../MemoAlert/MemoWIn';
-import sonidoParEncontrado from '../../assets/sounds/successAudio.mp3'
+import sonidoParEncontrado from '../../assets/sounds/successAudio.mp3';
+import sonidoGirarTarjeta from '../../assets/sounds/flipCard.mp3';
+import sonidoGanaste from '../../assets/sounds/win.mp3';
 
 //Arreglo local con contenido de prueba para cada tarjeta
-const contenidoList = ['choco_1.jpg', 'choco_2.jpg', 'choco_3.jpg', 'choco_4.jpg', 'choco_5.jpg', 'choco_6.jpg',
-  'choco_7.jpg', 'choco_8.jpg', 'gato.jpg',
-  'perro.jpg'];
+const contenidoList = ['choco_1.jpg'];
 const successAudio = new Audio(sonidoParEncontrado);
+const girarTarjetaAudio = new Audio(sonidoGirarTarjeta);
+const ganasteAudio = new Audio(sonidoGanaste);
 
 function MemoLogica() {
   //constante para almacenar el contenido del memorama mezclado
@@ -49,13 +51,17 @@ function MemoLogica() {
     return a;
   }
 
-  //Al renderizar por primera vez el componente...
-  useEffect(() => {
+  const iniciarCartasTablero = () => {
     //Se llama a la función mezclarArray, pasando un arreglo que concatena el contenido del memorama dos vez
     //el retorno se pasa al arreglo mezclarContenidoList
     const mezclarContenidoList = mezclarArray([...contenidoList, ...contenidoList]);
     //Se setea la constante barajearTarjetas con un arreglo de objetos, que contienen el indice, el continido, y el estado de que no esta girada
-    setBarajearTarjetas(mezclarContenidoList.map((contenido, indice) => ({ index: indice, contenido, tarjetaGirada: false })))
+    setBarajearTarjetas(mezclarContenidoList.map((contenido, indice) => ({ index: indice, contenido, tarjetaGirada: false })));
+  }
+
+  //Al renderizar por primera vez el componente...
+  useEffect(() => {
+    iniciarCartasTablero();
   }, []);
 
   //Sistema de puntos
@@ -67,22 +73,24 @@ function MemoLogica() {
 
   useEffect(() => {
     if (tarjetasEncontradas === contenidoList.length) {
+      ganasteAudio.volume = 0.8;
+      ganasteAudio.play();
       pausarCronometro();
       calculatePuntos();
-     setGano(true);
+      setGano(true);
     }
   }, [tarjetasEncontradas]);
 
   //Timer
   useEffect(() => {
- 
+
     intervalRef.current = setInterval(() => {
       setTiempo((prevTiempo) => prevTiempo + 1);
     }, 1000);
 
     return () => {
-    clearInterval(intervalRef.current);
-  };
+      clearInterval(intervalRef.current);
+    };
   }, []);
 
   const pausarCronometro = () => {
@@ -94,26 +102,44 @@ function MemoLogica() {
     const segundos = tiempo % 60;
     const minutos = Math.floor(tiempo / 60) % 60;
     //const horas = Math.floor(tiempo / 3600);
-    
+
     const formatoSegundos = segundos < 10 ? `0${segundos}` : segundos;
     const formatoMinutos = minutos < 10 ? `0${minutos}` : minutos;
     //const formatoHoras = horas < 10 ? `0${horas}` : horas;
-    
+
     return `${formatoMinutos}:${formatoSegundos}`;
   };
 
   const pausarJuego = () => {
 
     setAnimacion(true);
-    clearInterval(intervalRef.current);
+    pausarCronometro();
   };
 
-  const calculatePuntos = () =>{
-    const totalTiempoPre = Math.max(500 - (5 * Math.floor(tiempo - 30)), 0);
+  const calculatePuntos = () => {
+    const totalTiempoPre = Math.max(450 - (5 * Math.max(Math.floor(tiempo - 30), 0)), 0);
     const totalMovimientoPre = Math.max(270 - (6 * Math.floor(movimientos - contenidoList.length)), 0);
     setTotalTiempo(totalTiempoPre);
     setTotalMovimiento(totalMovimientoPre);
     setTotalP(puntos + totalTiempoPre + totalMovimientoPre);
+  }
+
+  const handleResetGameClick = () => {
+    iniciarCartasTablero();
+    setAnimacion(false);
+    setTarjetasEncontradas(0);
+    setPuntos(0);
+    setMovimientos(0);
+    setCombo(0);
+    setTiempo(0);
+    setGano(false);
+    intervalRef.current = setInterval(() => {
+      setTiempo((prevTiempo) => prevTiempo + 1);
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalRef.current);
+    };
   }
 
   //función que se llama al hacer click en alguna tarjeta y recibe un objeto (con los datos de la tarjeta)
@@ -127,6 +153,10 @@ function MemoLogica() {
     //se setea barajearTarjetas con el memorama modificado
     setBarajearTarjetas(barajearTarjetasCopia);
 
+    girarTarjetaAudio.volume = 0.6;
+    girarTarjetaAudio.currentTime = 0;
+    girarTarjetaAudio.play();
+
     //Se condiciona si no hay una tarjeta seleccionada, entonces se setea tarjetaSeleccionada
     if (tarjetaSeleccionada === null) {
       setTarjetaSeleccionada(memoTarjeta);
@@ -137,6 +167,7 @@ function MemoLogica() {
       setTarjetaSeleccionada(null);
       setTarjetasEncontradas((tarjetasEncontradas) => tarjetasEncontradas + 1);
       //successAudio.ended();
+      girarTarjetaAudio.volume = 0.0;
       successAudio.volume = 0.5;
       successAudio.currentTime = 0;
       successAudio.play();
@@ -161,15 +192,15 @@ function MemoLogica() {
     }
 
   };
-  
+
   //console.log(barajearTarjetas)
 
   return (
     //Se pasan la props a tablero
     <main className='w-full min-h-screen flex items-center justify-center flex-col p-2'>
-      {gano ? <MemoWin puntos={puntos} totalP={totalP} totalTiempo={totalTiempo} totalMovimiento={totalMovimiento} /> : null}
-      
-      <MemoHUB movimientos={movimientos} puntos={puntos} obtenerFormatoTiempo={obtenerFormatoTiempo()} pausarJuego={pausarJuego}/>
+      <MemoWin gano={gano} puntos={puntos} totalP={totalP} totalTiempo={totalTiempo} totalMovimiento={totalMovimiento} handleResetGameClick={handleResetGameClick}/>
+
+      <MemoHUB movimientos={movimientos} puntos={puntos} obtenerFormatoTiempo={obtenerFormatoTiempo()} pausarJuego={pausarJuego} />
       <MemoTablero contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} />
     </main>
 
