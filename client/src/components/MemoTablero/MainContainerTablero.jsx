@@ -2,12 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 import MemoTablero from './MemoTablero';
 import MemoHUB from '../MemoHUD/MemoHUD';
 import MemoWin from '../MemoAlert/MemoWIn';
+import MemoMessage from '../MemoAlert/MemoMessage';
 import sonidoParEncontrado from '../../assets/sounds/successAudio.mp3';
 import sonidoGirarTarjeta from '../../assets/sounds/flipCard.mp3';
 import sonidoGanaste from '../../assets/sounds/win.mp3';
 
 //Arreglo local con contenido de prueba para cada tarjeta
-const contenidoList = ['choco_1.jpg'];
+const contenidoList = ['choco_1.jpg', 'choco_2.jpg', 'choco_3.jpg','choco_4.jpg', 'choco_5.jpg', 'choco_6.jpg',
+'choco_7.jpg', 'choco_8.jpg', 'gato.jpg',
+'perro.jpg'];
 const successAudio = new Audio(sonidoParEncontrado);
 const girarTarjetaAudio = new Audio(sonidoGirarTarjeta);
 const ganasteAudio = new Audio(sonidoGanaste);
@@ -27,10 +30,14 @@ function MemoLogica() {
   //Sistema de puntos
   const [movimientos, setMovimientos] = useState(0);
   const [puntos, setPuntos] = useState(0);
+  const puntosActualizados = useRef(puntos);
   const [combo, setCombo] = useState(0);
   const [totalP, setTotalP] = useState(0);
   const [totalTiempo, setTotalTiempo] = useState(0);
   const [totalMovimiento, setTotalMovimiento] = useState(0);
+
+  //Mensajes
+  const [mostrarMensajes, setMostrarMensajes] = useState(false);
 
 
   //Sistama de timer
@@ -67,7 +74,9 @@ function MemoLogica() {
   //Sistema de puntos
   useEffect(() => {
     if (combo > 0) {
-      setPuntos((puntos) => puntos + 50 * combo);
+      const calPuntos = puntos + 50 * combo;
+      setPuntos(calPuntos);
+      puntosActualizados.current = calPuntos;
     }
   }, [combo]);
 
@@ -119,9 +128,12 @@ function MemoLogica() {
   const calculatePuntos = () => {
     const totalTiempoPre = Math.max(450 - (5 * Math.max(Math.floor(tiempo - 30), 0)), 0);
     const totalMovimientoPre = Math.max(270 - (6 * Math.floor(movimientos - contenidoList.length)), 0);
+    console.log(totalMovimientoPre);
+    console.log(totalTiempoPre);
+    console.log(puntosActualizados.current);
     setTotalTiempo(totalTiempoPre);
     setTotalMovimiento(totalMovimientoPre);
-    setTotalP(puntos + totalTiempoPre + totalMovimientoPre);
+    setTotalP(puntosActualizados.current + totalTiempoPre + totalMovimientoPre);
   }
 
   const handleResetGameClick = () => {
@@ -133,6 +145,34 @@ function MemoLogica() {
     setCombo(0);
     setTiempo(0);
     setGano(false);
+    intervalRef.current = setInterval(() => {
+      setTiempo((prevTiempo) => prevTiempo + 1);
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalRef.current);
+    };
+  }
+
+  const startGame = async () =>{
+    setMostrarMensajes(true);
+    setIniciarText(true);
+    setAnimacion(true);
+  
+    startGameAudio.volume = 0.8;
+    startGameAudio.play();
+  
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  
+    await delay(4000);
+    setIniciarText(false);
+    setIniciarText2(true);
+  
+    await delay(2500);
+    setIniciarText2(false);
+  
+    await delay(8600);
+    setAnimacion(false);
     intervalRef.current = setInterval(() => {
       setTiempo((prevTiempo) => prevTiempo + 1);
     }, 1000);
@@ -198,6 +238,7 @@ function MemoLogica() {
   return (
     //Se pasan la props a tablero
     <main className='w-full min-h-screen flex items-center justify-center flex-col p-2'>
+      {mostrarMensajes ? <MemoMessage/> : null}
       <MemoWin gano={gano} puntos={puntos} totalP={totalP} totalTiempo={totalTiempo} totalMovimiento={totalMovimiento} handleResetGameClick={handleResetGameClick}/>
 
       <MemoHUB movimientos={movimientos} puntos={puntos} obtenerFormatoTiempo={obtenerFormatoTiempo()} pausarJuego={pausarJuego} />

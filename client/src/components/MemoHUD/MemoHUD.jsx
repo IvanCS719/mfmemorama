@@ -2,7 +2,7 @@
 function MemoHUD({ movimientos, puntos, obtenerFormatoTiempo, pausarJuego }) {
 
     return (
-        <div className="w-full flex justify-between text-base mb-2 font-fontGeneral font-semibold text-gray-950">
+        <div className="w-full flex justify-between text-xl mb-2 font-fontGeneral font-semibold text-gray-950">
             <div className="flex gap-3">
                 <div className="w-20 flex justify-center px-4 py-1 bg-gray-300 rounded-lg items-center gap-2">
                     <img className="w-4" src="/vite.svg" alt="" />
