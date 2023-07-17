@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import MemoTablero from './MemoTablero';
 import MemoHUB from '../MemoHUD/MemoHUD';
 import MemoWin from '../MemoAlert/MemoWIn';
+import MemoPause from '../MemoAlert/MemoPause';
 import MemoMessage from '../MemoAlert/MemoMessage';
 import sonidoStartGame from '../../assets/sounds/startGame.mp3';
 import sonidoParEncontrado from '../../assets/sounds/successAudio.mp3';
@@ -27,10 +28,6 @@ function MemoLogica() {
 
   const [tarjetasEncontradas, setTarjetasEncontradas] = useState(0);
 
-  const [start, setStart] =useState(false);
-
-  const [gano, setGano] = useState(false);
-
   //Sistema de puntos
   const [movimientos, setMovimientos] = useState(0);
   const [puntos, setPuntos] = useState(0);
@@ -41,6 +38,10 @@ function MemoLogica() {
   const [totalMovimiento, setTotalMovimiento] = useState(0);
 
   //Mensajes
+
+  const [start, setStart] =useState(false);
+  const [gano, setGano] = useState(false);
+  const [pauseAlert, setPauseAlert] = useState(false);
   const [mostrarMensajes, setMostrarMensajes] = useState(false);
   const [primerTexto, setPrimerTexto] = useState(false);
   const [sengundoTexto, setSegundoTexto] = useState(false);
@@ -108,7 +109,6 @@ function MemoLogica() {
       pausarCronometro();
       calculatePuntos();
       setGano(true);
-      setStart(false);
     }
   }, [tarjetasEncontradas]);
 
@@ -131,11 +131,22 @@ function MemoLogica() {
   };
 
   const pausarJuego = () => {
-
     setAnimacion(true);
     pausarCronometro();
+    setPauseAlert(true);
   };
 
+  const continuarJuego = () => {
+    setAnimacion(false);
+    setPauseAlert(false);
+    intervalRef.current = setInterval(() => {
+      setTiempo((prevTiempo) => prevTiempo + 1);
+    }, 1000);
+
+    return () => {
+    clearInterval(intervalRef.current);
+  };
+  };
   const calculatePuntos = () => {
     const totalTiempoPre = Math.max(450 - (5 * Math.max(Math.floor(tiempo - 30), 0)), 0);
     const totalMovimientoPre = Math.max(270 - (6 * Math.floor(movimientos - contenidoList.length)), 0);
@@ -152,6 +163,8 @@ function MemoLogica() {
     setCombo(0);
     setTiempo(0);
     setGano(false);
+    setStart(false);
+    setPauseAlert(false);
     startGameAudio.volume = 0.8;
     startGameAudio.play();
     startGame();
@@ -250,7 +263,7 @@ function MemoLogica() {
     <main className='w-full min-h-screen flex items-center justify-center flex-col p-2'>
       <MemoMessage mostrarMensajes={mostrarMensajes} primerTexto={primerTexto} sengundoTexto={sengundoTexto}/>
       <MemoWin gano={gano} puntos={puntos} totalP={totalP} totalTiempo={totalTiempo} totalMovimiento={totalMovimiento} handleResetGameClick={handleResetGameClick}/>
-
+      <MemoPause pauseAlert={pauseAlert} continuarJuego={continuarJuego} handleResetGameClick={handleResetGameClick}/>
       <MemoHUB movimientos={movimientos} puntos={puntos} obtenerFormatoTiempo={obtenerFormatoTiempo()} pausarJuego={pausarJuego} />
       <MemoTablero start={start} contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} />
     </main>
