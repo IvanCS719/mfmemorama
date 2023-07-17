@@ -3,6 +3,7 @@ import MemoTablero from './MemoTablero';
 import MemoHUB from '../MemoHUD/MemoHUD';
 import MemoWin from '../MemoAlert/MemoWIn';
 import MemoMessage from '../MemoAlert/MemoMessage';
+import sonidoStartGame from '../../assets/sounds/startGame.mp3';
 import sonidoParEncontrado from '../../assets/sounds/successAudio.mp3';
 import sonidoGirarTarjeta from '../../assets/sounds/flipCard.mp3';
 import sonidoGanaste from '../../assets/sounds/win.mp3';
@@ -11,6 +12,7 @@ import sonidoGanaste from '../../assets/sounds/win.mp3';
 const contenidoList = ['choco_1.jpg', 'choco_2.jpg', 'choco_3.jpg','choco_4.jpg', 'choco_5.jpg', 'choco_6.jpg',
 'choco_7.jpg', 'choco_8.jpg', 'gato.jpg',
 'perro.jpg'];
+const startGameAudio = new Audio(sonidoStartGame);
 const successAudio = new Audio(sonidoParEncontrado);
 const girarTarjetaAudio = new Audio(sonidoGirarTarjeta);
 const ganasteAudio = new Audio(sonidoGanaste);
@@ -25,6 +27,8 @@ function MemoLogica() {
 
   const [tarjetasEncontradas, setTarjetasEncontradas] = useState(0);
 
+  const [start, setStart] =useState(false);
+
   const [gano, setGano] = useState(false);
 
   //Sistema de puntos
@@ -38,6 +42,8 @@ function MemoLogica() {
 
   //Mensajes
   const [mostrarMensajes, setMostrarMensajes] = useState(false);
+  const [primerTexto, setPrimerTexto] = useState(false);
+  const [sengundoTexto, setSegundoTexto] = useState(false);
 
 
   //Sistama de timer
@@ -69,7 +75,22 @@ function MemoLogica() {
   //Al renderizar por primera vez el componente...
   useEffect(() => {
     iniciarCartasTablero();
+    startGame();
+        
+    const timeout = setTimeout(() => {
+      intervalRef.current = setInterval(() => {
+        setTiempo((prevTiempo) => prevTiempo + 1);
+      }, 1000);
+    }, 15100);
+  
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(intervalRef.current);
+    };
   }, []);
+
+  //Timer
+ 
 
   //Sistema de puntos
   useEffect(() => {
@@ -87,20 +108,10 @@ function MemoLogica() {
       pausarCronometro();
       calculatePuntos();
       setGano(true);
+      setStart(false);
     }
   }, [tarjetasEncontradas]);
 
-  //Timer
-  useEffect(() => {
-
-    intervalRef.current = setInterval(() => {
-      setTiempo((prevTiempo) => prevTiempo + 1);
-    }, 1000);
-
-    return () => {
-      clearInterval(intervalRef.current);
-    };
-  }, []);
 
   const pausarCronometro = () => {
 
@@ -128,9 +139,6 @@ function MemoLogica() {
   const calculatePuntos = () => {
     const totalTiempoPre = Math.max(450 - (5 * Math.max(Math.floor(tiempo - 30), 0)), 0);
     const totalMovimientoPre = Math.max(270 - (6 * Math.floor(movimientos - contenidoList.length)), 0);
-    console.log(totalMovimientoPre);
-    console.log(totalTiempoPre);
-    console.log(puntosActualizados.current);
     setTotalTiempo(totalTiempoPre);
     setTotalMovimiento(totalMovimientoPre);
     setTotalP(puntosActualizados.current + totalTiempoPre + totalMovimientoPre);
@@ -138,49 +146,51 @@ function MemoLogica() {
 
   const handleResetGameClick = () => {
     iniciarCartasTablero();
-    setAnimacion(false);
     setTarjetasEncontradas(0);
     setPuntos(0);
     setMovimientos(0);
     setCombo(0);
     setTiempo(0);
     setGano(false);
-    intervalRef.current = setInterval(() => {
-      setTiempo((prevTiempo) => prevTiempo + 1);
-    }, 1000);
-
+    startGameAudio.volume = 0.8;
+    startGameAudio.play();
+    startGame();
+        
+    const timeout = setTimeout(() => {
+      intervalRef.current = setInterval(() => {
+        setTiempo((prevTiempo) => prevTiempo + 1);
+      }, 1000);
+    }, 15100);
+  
     return () => {
+      clearTimeout(timeout);
       clearInterval(intervalRef.current);
     };
   }
 
   const startGame = async () =>{
     setMostrarMensajes(true);
-    setIniciarText(true);
+    setPrimerTexto(true);
     setAnimacion(true);
   
-    startGameAudio.volume = 0.8;
-    startGameAudio.play();
+    /*startGameAudio.volume = 0.8;
+    startGameAudio.play();*/
   
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
   
     await delay(4000);
-    setIniciarText(false);
-    setIniciarText2(true);
+    setPrimerTexto(false);
+    setSegundoTexto(true);
   
     await delay(2500);
-    setIniciarText2(false);
+    setSegundoTexto(false);
+    setStart(true);
   
     await delay(8600);
     setAnimacion(false);
-    intervalRef.current = setInterval(() => {
-      setTiempo((prevTiempo) => prevTiempo + 1);
-    }, 1000);
+    setMostrarMensajes(false);
 
-    return () => {
-      clearInterval(intervalRef.current);
-    };
-  }
+  } 
 
   //función que se llama al hacer click en alguna tarjeta y recibe un objeto (con los datos de la tarjeta)
   const handleMemoClick = memoTarjeta => {
@@ -238,11 +248,11 @@ function MemoLogica() {
   return (
     //Se pasan la props a tablero
     <main className='w-full min-h-screen flex items-center justify-center flex-col p-2'>
-      {mostrarMensajes ? <MemoMessage/> : null}
+      <MemoMessage mostrarMensajes={mostrarMensajes} primerTexto={primerTexto} sengundoTexto={sengundoTexto}/>
       <MemoWin gano={gano} puntos={puntos} totalP={totalP} totalTiempo={totalTiempo} totalMovimiento={totalMovimiento} handleResetGameClick={handleResetGameClick}/>
 
       <MemoHUB movimientos={movimientos} puntos={puntos} obtenerFormatoTiempo={obtenerFormatoTiempo()} pausarJuego={pausarJuego} />
-      <MemoTablero contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} />
+      <MemoTablero start={start} contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} />
     </main>
 
   );

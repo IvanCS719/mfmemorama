@@ -11,6 +11,11 @@
     transform-style: preserve-3d;
 }
 
+.memo-tarjeta-inner.start{
+    animation: iniciar 8.6s;
+}
+
+
 .memo-tarjeta-front, .memo-tarjeta-back{
     position: absolute;
     width: 100%;
@@ -36,4 +41,17 @@
 
 .memo-tarjeta-Girada{
     transform: rotateY(180deg);
+}
+
+@keyframes iniciar {
+
+    20%,
+    90% {
+        transform: rotateY(180deg);
+    }
+
+    0%,
+    100% {
+        transform: rotateY(0deg);
+    }
 }
