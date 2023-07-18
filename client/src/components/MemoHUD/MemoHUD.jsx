@@ -17,7 +17,7 @@ function MemoHUD({ movimientos, puntos, obtenerFormatoTiempo, pausarJuego }) {
                     <span>{obtenerFormatoTiempo}</span>
                 </div>
             </div>
-            <button className="px-3 rounded-full bg-blue-500" onClick={pausarJuego}><i className="fa-solid fa-pause"></i></button>
+            <button className="px-3 rounded-full text-white bg-blue-500" onClick={pausarJuego}><i className="fa-solid fa-pause"></i></button>
 
         </div>
     );
