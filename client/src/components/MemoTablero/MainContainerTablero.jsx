@@ -12,8 +12,8 @@ import sonidoGanaste from '../../assets/sounds/win.mp3';
 
 //Arreglo local con contenido de prueba para cada tarjeta
 const contenidoList = ['choco_1.jpg', 'choco_2.jpg', 'choco_3.jpg', 'choco_4.jpg', 'choco_5.jpg', 'choco_6.jpg',
-  'choco_7.jpg', 'choco_8.jpg', 'gato.jpg',
-  'perro.jpg'];
+'choco_7.jpg', 'choco_8.jpg', 'gato.jpg',
+'perro.jpg'];
 
 //Musica
 const startGameAudio = new Audio(sonidoStartGame);
@@ -31,6 +31,10 @@ function MemoLogica() {
   const [animacion, setAnimacion] = useState(false);
 
   const [tarjetasEncontradas, setTarjetasEncontradas] = useState(0);
+
+  //Audio
+  const [volumeMusic, setVolumeMusic] = useState(true);
+  const [volumeSound, setVolumeSound] = useState(true);
 
   //Sistema de puntos
   const [movimientos, setMovimientos] = useState(0);
@@ -96,7 +100,27 @@ function MemoLogica() {
     };
   }, []);
 
-  //Timer
+  //Sonido
+  useEffect(() => {
+    if (volumeSound) {
+      successAudio.volume = 0.5;
+      girarTarjetaAudio.volume = 0.6;
+    } else {
+      successAudio.volume = 0.0;
+      girarTarjetaAudio.volume = 0.0;
+    }
+  }, [volumeSound]);
+
+//Musica
+  useEffect(() => {
+    if (volumeMusic) {
+      startGameAudio.volume = 0.8;
+      ganasteAudio.volume = 0.8;
+    } else {
+      startGameAudio.volume = 0.0;
+      ganasteAudio.volume = 0.0;
+    }
+  }, [volumeMusic]);
 
 
   //Sistema de puntos
@@ -122,7 +146,6 @@ function MemoLogica() {
 
   useEffect(() => {
     if (tarjetasEncontradas === contenidoList.length) {
-      ganasteAudio.volume = 0.8;
       ganasteAudio.play();
       pausarCronometro();
       calculatePuntos();
@@ -183,7 +206,8 @@ function MemoLogica() {
     setGano(false);
     setStart(false);
     setPauseAlert(false);
-    startGameAudio.volume = 0.8;
+    ganasteAudio.pause();
+    ganasteAudio.currentTime = 0;
     startGameAudio.play();
     startGame();
 
@@ -234,7 +258,7 @@ function MemoLogica() {
     //se setea barajearTarjetas con el memorama modificado
     setBarajearTarjetas(barajearTarjetasCopia);
 
-    girarTarjetaAudio.volume = 0.6;
+
     girarTarjetaAudio.currentTime = 0;
     girarTarjetaAudio.play();
 
@@ -247,9 +271,7 @@ function MemoLogica() {
     else if (tarjetaSeleccionada.contenido === memoTarjeta.contenido) {
       setTarjetaSeleccionada(null);
       setTarjetasEncontradas((tarjetasEncontradas) => tarjetasEncontradas + 1);
-      //successAudio.ended();
-      girarTarjetaAudio.volume = 0.0;
-      successAudio.volume = 0.5;
+      girarTarjetaAudio.pause();
       successAudio.currentTime = 0;
       successAudio.play();
       setMovimientos((movimientos) => movimientos + 1);
@@ -280,9 +302,9 @@ function MemoLogica() {
     //Se pasan la props a tablero
     <main className='w-full min-h-screen flex items-center justify-center flex-col p-2'>
       <MemoMessage mostrarMensajes={mostrarMensajes} primerTexto={primerTexto} sengundoTexto={sengundoTexto} />
-      <MemoActionMessage mostrarMensajesAction={mostrarMensajesAction} mostrarCombo={mostrarCombo} combo={combo}/>
+      <MemoActionMessage mostrarMensajesAction={mostrarMensajesAction} mostrarCombo={mostrarCombo} combo={combo} />
       <MemoWin gano={gano} puntos={puntos} totalP={totalP} totalTiempo={totalTiempo} totalMovimiento={totalMovimiento} handleResetGameClick={handleResetGameClick} />
-      <MemoPause pauseAlert={pauseAlert} continuarJuego={continuarJuego} handleResetGameClick={handleResetGameClick} />
+      <MemoPause pauseAlert={pauseAlert} volumeSound={volumeSound} setVolumeSound={setVolumeSound} volumeMusic={volumeMusic} setVolumeMusic={setVolumeMusic} continuarJuego={continuarJuego} handleResetGameClick={handleResetGameClick} />
       <MemoHUB movimientos={movimientos} puntos={puntos} obtenerFormatoTiempo={obtenerFormatoTiempo()} pausarJuego={pausarJuego} />
       <MemoTablero start={start} contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} />
     </main>
