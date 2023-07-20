@@ -1,10 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
+
 import MemoTablero from './MemoTablero';
 import MemoHUB from '../MemoHUD/MemoHUD';
 import MemoWin from '../MemoAlert/MemoWIn';
 import MemoPause from '../MemoAlert/MemoPause';
 import MemoMessage from '../MemoAlert/MemoMessage';
 import MemoActionMessage from '../MemoAlert/MemoActionMessage';
+
+import MemoSelectNumCards from '../MemoLayouts/MemoSelectNumCards';
+import MemoSelectTema from '../MemoLayouts/MemoSelectTema';
+
 import sonidoStartGame from '../../assets/sounds/startGame.mp3';
 import sonidoParEncontrado from '../../assets/sounds/successAudio.mp3';
 import sonidoGirarTarjeta from '../../assets/sounds/flipCard.mp3';
@@ -12,8 +17,10 @@ import sonidoGanaste from '../../assets/sounds/win.mp3';
 
 //Arreglo local con contenido de prueba para cada tarjeta
 const contenidoList = ['choco_1.jpg', 'choco_2.jpg', 'choco_3.jpg', 'choco_4.jpg', 'choco_5.jpg', 'choco_6.jpg',
-'choco_7.jpg', 'choco_8.jpg', 'gato.jpg',
+'choco_7.jpg', 'choco_8.jpg','choco_9.jpg','choco_10.jpg', 'choco_11.jpg', 'choco_12.jpg','choco_13.jpg', 'gato.jpg',
 'perro.jpg'];
+
+let numeroDeCartasEstablecido = [];
 
 //Musica
 const startGameAudio = new Audio(sonidoStartGame);
@@ -23,6 +30,11 @@ const successAudio = new Audio(sonidoParEncontrado);
 const girarTarjetaAudio = new Audio(sonidoGirarTarjeta);
 
 function MemoLogica() {
+  //Layouts Visbles
+  const [layoutMemoSelectTema, setLayoutMemoSelectTema] = useState(false);
+  const [layoutSelectNumCards, setLayoutSelectNumCards] = useState(true);
+  const [selectedNumCards, setSelectedNumCards] = useState(72);
+
   //constante para almacenar el contenido del memorama mezclado
   const [barajearTarjetas, setBarajearTarjetas] = useState([]);
   //constante para almacenar la carta que el usuario dio click
@@ -46,7 +58,6 @@ function MemoLogica() {
   const [totalMovimiento, setTotalMovimiento] = useState(0);
 
   //Mensajes
-
   const [start, setStart] = useState(false);
   const [gano, setGano] = useState(false);
   const [pauseAlert, setPauseAlert] = useState(false);
@@ -55,7 +66,6 @@ function MemoLogica() {
   const [primerTexto, setPrimerTexto] = useState(false);
   const [sengundoTexto, setSegundoTexto] = useState(false);
   const [mostrarCombo, setMostrarCombo] = useState(false);
-
 
   //Sistama de timer
   const [tiempo, setTiempo] = useState(0);
@@ -75,16 +85,22 @@ function MemoLogica() {
     return a;
   }
 
+  const establecerNumeroCartas = (numCards) => {
+    const mezclarCartas = mezclarArray(contenidoList);
+    numeroDeCartasEstablecido = mezclarCartas.slice(0,numCards);
+  }
+
   const iniciarCartasTablero = () => {
     //Se llama a la función mezclarArray, pasando un arreglo que concatena el contenido del memorama dos vez
     //el retorno se pasa al arreglo mezclarContenidoList
-    const mezclarContenidoList = mezclarArray([...contenidoList, ...contenidoList]);
+    const mezclarContenidoList = mezclarArray([...numeroDeCartasEstablecido, ...numeroDeCartasEstablecido]);
     //Se setea la constante barajearTarjetas con un arreglo de objetos, que contienen el indice, el continido, y el estado de que no esta girada
     setBarajearTarjetas(mezclarContenidoList.map((contenido, indice) => ({ index: indice, contenido, tarjetaGirada: false })));
   }
 
   //Al renderizar por primera vez el componente...
-  useEffect(() => {
+  const renderizarCartasYTablero = (numCards) => {
+    establecerNumeroCartas(numCards);
     iniciarCartasTablero();
     startGame();
 
@@ -98,7 +114,7 @@ function MemoLogica() {
       clearTimeout(timeout);
       clearInterval(intervalRef.current);
     };
-  }, []);
+  };
 
   //Sonido
   useEffect(() => {
@@ -145,7 +161,7 @@ function MemoLogica() {
   }, [combo]);
 
   useEffect(() => {
-    if (tarjetasEncontradas === contenidoList.length) {
+    if (tarjetasEncontradas === selectedNumCards) {
       ganasteAudio.play();
       pausarCronometro();
       calculatePuntos();
@@ -227,10 +243,7 @@ function MemoLogica() {
     setMostrarMensajes(true);
     setPrimerTexto(true);
     setAnimacion(true);
-
-    /*startGameAudio.volume = 0.8;
-    startGameAudio.play();*/
-
+    startGameAudio.play();
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     await delay(4000);
@@ -271,7 +284,6 @@ function MemoLogica() {
     else if (tarjetaSeleccionada.contenido === memoTarjeta.contenido) {
       setTarjetaSeleccionada(null);
       setTarjetasEncontradas((tarjetasEncontradas) => tarjetasEncontradas + 1);
-      girarTarjetaAudio.pause();
       successAudio.currentTime = 0;
       successAudio.play();
       setMovimientos((movimientos) => movimientos + 1);
@@ -296,20 +308,22 @@ function MemoLogica() {
 
   };
 
-  //console.log(barajearTarjetas)
-
   return (
     //Se pasan la props a tablero
-    <main className='w-full min-h-screen flex items-center justify-center flex-col p-2'>
-      <MemoMessage mostrarMensajes={mostrarMensajes} primerTexto={primerTexto} sengundoTexto={sengundoTexto} />
+    <div className='p-2'>
+      {layoutMemoSelectTema ? <MemoSelectTema/> : null}
+      {layoutSelectNumCards? <MemoSelectNumCards setLayoutSelectNumCards={setLayoutSelectNumCards} setSelectedNumCards={setSelectedNumCards} renderizarCartasYTablero={renderizarCartasYTablero}/> : null}
+      {layoutMemoSelectTema || layoutSelectNumCards ? null : <div className='w-full min-h-screen flex items-center justify-center flex-col '>
+        <MemoMessage mostrarMensajes={mostrarMensajes} primerTexto={primerTexto} sengundoTexto={sengundoTexto} />
       <MemoActionMessage mostrarMensajesAction={mostrarMensajesAction} mostrarCombo={mostrarCombo} combo={combo} />
       <MemoWin gano={gano} puntos={puntos} totalP={totalP} totalTiempo={totalTiempo} totalMovimiento={totalMovimiento} handleResetGameClick={handleResetGameClick} />
       <MemoPause pauseAlert={pauseAlert} volumeSound={volumeSound} setVolumeSound={setVolumeSound} volumeMusic={volumeMusic} setVolumeMusic={setVolumeMusic} continuarJuego={continuarJuego} handleResetGameClick={handleResetGameClick} />
       <MemoHUB movimientos={movimientos} puntos={puntos} obtenerFormatoTiempo={obtenerFormatoTiempo()} pausarJuego={pausarJuego} />
       <MemoTablero start={start} contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} />
-    </main>
+        
+        </div>}
+    </div>
 
   );
 }
-
 export default MemoLogica

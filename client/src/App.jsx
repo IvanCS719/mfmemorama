@@ -10,7 +10,7 @@ function App() {
 
  return(
   <>
-    <MemoSelectNumCards></MemoSelectNumCards>
+    <MainContainerTablero></MainContainerTablero>
   </>
  );
 

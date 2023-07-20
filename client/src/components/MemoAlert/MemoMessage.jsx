@@ -1,7 +1,7 @@
 function MemoMessage({ mostrarMensajes, primerTexto, sengundoTexto}) {
 
     return (
-        <div className={`fixed z-50 inset-0 flex items-center justify-center font-fontGeneral text-center font-bold ${mostrarMensajes ? 'opacity-100 scale-100' : 'opacity-0 scale-0 pointer-events-none'}`}>
+        <div className={`fixed z-30 inset-0 flex items-center justify-center font-fontGeneral text-center font-bold ${mostrarMensajes ? 'opacity-100 scale-100' : 'opacity-0 scale-0 pointer-events-none'}`}>
 
 
             <div className='w-full h-full p-4 max-h-full flex justify-center items-center overflow-auto'>
