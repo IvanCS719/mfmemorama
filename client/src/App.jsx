@@ -1,6 +1,8 @@
 import './App.css';
 import MainContainerTablero from './components/MemoTablero/MainContainerTablero.jsx';
-import MemoMainMenu from './components/MemoMainMenu/MemoMainMenu.jsx';
+import MemoSelectTema from './components/MemoLayouts/MemoSelectTema.jsx';
+import MemoSelectNumCards from './components/MemoLayouts/MemoSelectNumCards.jsx';
+import MemoMainMenu from './components/MemoLayouts/MemoMainMenu.jsx';
 
 
 
@@ -8,7 +10,7 @@ function App() {
 
  return(
   <>
-    <MemoMainMenu></MemoMainMenu>
+    <MemoSelectNumCards></MemoSelectNumCards>
   </>
  );
 
