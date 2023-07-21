@@ -18,7 +18,9 @@ import sonidoGanaste from '../../assets/sounds/win.mp3';
 //Arreglo local con contenido de prueba para cada tarjeta
 const contenidoList = ['choco_1.jpg', 'choco_2.jpg', 'choco_3.jpg', 'choco_4.jpg', 'choco_5.jpg', 'choco_6.jpg',
 'choco_7.jpg', 'choco_8.jpg','choco_9.jpg','choco_10.jpg', 'choco_11.jpg', 'choco_12.jpg','choco_13.jpg', 'gato.jpg',
-'perro.jpg'];
+'perro.jpg', 'choco_1.jpg', 'choco_2.jpg', 'choco_3.jpg', 'choco_4.jpg', 'choco_5.jpg', 'choco_6.jpg',
+'choco_7.jpg', 'choco_8.jpg','choco_9.jpg','choco_10.jpg', 'choco_11.jpg', 'choco_12.jpg','choco_13.jpg', 'choco_1.jpg', 'choco_2.jpg', 'choco_3.jpg', 'choco_4.jpg', 'choco_5.jpg', 'choco_6.jpg',
+'choco_7.jpg', 'choco_8.jpg'];
 
 let numeroDeCartasEstablecido = [];
 
@@ -31,7 +33,7 @@ const girarTarjetaAudio = new Audio(sonidoGirarTarjeta);
 
 function MemoLogica() {
   //Layouts Visbles
-  const [layoutMemoSelectTema, setLayoutMemoSelectTema] = useState(false);
+  const [layoutMemoSelectTema, setLayoutMemoSelectTema] = useState(true);
   const [layoutSelectNumCards, setLayoutSelectNumCards] = useState(true);
   const [selectedNumCards, setSelectedNumCards] = useState(72);
 
@@ -138,7 +140,6 @@ function MemoLogica() {
     }
   }, [volumeMusic]);
 
-
   //Sistema de puntos
   useEffect(() => {
     if (combo > 0) {
@@ -169,9 +170,7 @@ function MemoLogica() {
     }
   }, [tarjetasEncontradas]);
 
-
   const pausarCronometro = () => {
-
     clearInterval(intervalRef.current);
   };
 
@@ -311,15 +310,15 @@ function MemoLogica() {
   return (
     //Se pasan la props a tablero
     <div className='p-2'>
-      {layoutMemoSelectTema ? <MemoSelectTema/> : null}
-      {layoutSelectNumCards? <MemoSelectNumCards setLayoutSelectNumCards={setLayoutSelectNumCards} setSelectedNumCards={setSelectedNumCards} renderizarCartasYTablero={renderizarCartasYTablero}/> : null}
+      {layoutMemoSelectTema ? <MemoSelectTema successAudio={successAudio} setLayoutMemoSelectTema={setLayoutMemoSelectTema}/> : null}
+      {layoutSelectNumCards? <MemoSelectNumCards successAudio={successAudio} setLayoutSelectNumCards={setLayoutSelectNumCards} setSelectedNumCards={setSelectedNumCards} renderizarCartasYTablero={renderizarCartasYTablero}/> : null}
       {layoutMemoSelectTema || layoutSelectNumCards ? null : <div className='w-full min-h-screen flex items-center justify-center flex-col '>
         <MemoMessage mostrarMensajes={mostrarMensajes} primerTexto={primerTexto} sengundoTexto={sengundoTexto} />
       <MemoActionMessage mostrarMensajesAction={mostrarMensajesAction} mostrarCombo={mostrarCombo} combo={combo} />
       <MemoWin gano={gano} puntos={puntos} totalP={totalP} totalTiempo={totalTiempo} totalMovimiento={totalMovimiento} handleResetGameClick={handleResetGameClick} />
       <MemoPause pauseAlert={pauseAlert} volumeSound={volumeSound} setVolumeSound={setVolumeSound} volumeMusic={volumeMusic} setVolumeMusic={setVolumeMusic} continuarJuego={continuarJuego} handleResetGameClick={handleResetGameClick} />
       <MemoHUB movimientos={movimientos} puntos={puntos} obtenerFormatoTiempo={obtenerFormatoTiempo()} pausarJuego={pausarJuego} />
-      <MemoTablero start={start} contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} />
+      <MemoTablero start={start} contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} selectedNumCards={selectedNumCards}/>
         
         </div>}
     </div>
