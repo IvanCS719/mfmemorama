@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-import MemoTablero from './MemoTablero';
+import MemoTablero from '../MemoTablero/MemoTablero';
 import MemoHUB from '../MemoHUD/MemoHUD';
 import MemoWin from '../MemoAlert/MemoWIn';
 import MemoPause from '../MemoAlert/MemoPause';
@@ -205,7 +205,7 @@ function MemoLogica() {
   };
   const calculatePuntos = () => {
     const totalTiempoPre = Math.max(450 - (5 * Math.max(Math.floor(tiempo - 30), 0)), 0);
-    const totalMovimientoPre = Math.max(270 - (6 * Math.floor(movimientos - contenidoList.length)), 0);
+    const totalMovimientoPre = Math.max(270 - (6 * Math.floor(movimientos - selectedNumCards)), 0);
     setTotalTiempo(totalTiempoPre);
     setTotalMovimiento(totalMovimientoPre);
     setTotalP(puntosActualizados.current + totalTiempoPre + totalMovimientoPre);
