@@ -288,8 +288,8 @@ function MainContainerTablero_2P() {
     //Se pasan la props a tablero
     <div className='p-2'>
       {layoutMemoSelectTema ? <MemoSelectTema successAudio={successAudio} setLayoutMemoSelectTema={setLayoutMemoSelectTema}/> : null}
-      {layoutSelectNumCards? <MemoSelectNumCards successAudio={successAudio} setLayoutSelectNumCards={setLayoutSelectNumCards} setSelectedNumCards={setSelectedNumCards} renderizarCartasYTablero={renderizarCartasYTablero}/> : null}
-      {layoutMemoSelectTema || layoutSelectNumCards ? null : <div className='w-full min-h-screen flex items-center justify-center flex-col '>
+      {layoutSelectNumCards? <MemoSelectNumCards setLayoutMemoSelectTema={setLayoutMemoSelectTema} successAudio={successAudio} setLayoutSelectNumCards={setLayoutSelectNumCards} setSelectedNumCards={setSelectedNumCards} renderizarCartasYTablero={renderizarCartasYTablero}/> : null}
+      {layoutMemoSelectTema || layoutSelectNumCards ? null : <div className='w-full min-h-screen flex items-center justify-center lg:justify-normal flex-col '>
         <MemoMessage mostrarMensajes={mostrarMensajes} primerTexto={primerTexto} sengundoTexto={sengundoTexto} />
       <MemoActionMessage mostrarMensajesAction={mostrarMensajesAction} mostrarCombo={mostrarCombo} combo={combo}/>
       <MemoMessageTurno mostrarMensajesTurno={mostrarMensajesTurno} turnoPlayer1Mess={turnoPlayer1Mess} turnoPlayer2Mess={turnoPlayer2Mess}/>

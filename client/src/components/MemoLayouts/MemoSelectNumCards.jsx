@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
-function MemoSelectNumCards({setLayoutSelectNumCards, setSelectedNumCards, renderizarCartasYTablero}) {
+function MemoSelectNumCards({setLayoutSelectNumCards, setSelectedNumCards, renderizarCartasYTablero, setLayoutMemoSelectTema}) {
 
     const numCards = [{ numCards: 3, totalCards: 6 },
     { numCards: 6, totalCards: 12 },
@@ -11,8 +12,12 @@ function MemoSelectNumCards({setLayoutSelectNumCards, setSelectedNumCards, rende
 
     return (
         //Se pasan la props a tablero
-        <main className='bg-white fixed z-40 inset-0 flex items-center font-fontGeneral py-2'>
-            <div className='w-full h-full max-h-full flex flex-col items-center overflow-auto'>
+        <main className='bg-white fixed z-40 inset-0 flex items-center flex-col font-fontGeneral py-2 overflow-auto'>
+            <div className='bg-slate-200 w-full -mt-2 py-2 px-6 flex justify-end gap-2'>
+            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-2xl" onClick={()=>{setLayoutMemoSelectTema(true)}}><i className="fa-solid fa-arrow-left"></i></button>
+                <Link to="/"><button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-2xl"><i className="fa-solid fa-house"></i></button></Link>
+            </div>
+            <div className='w-full h-full max-h-full flex flex-col items-center my-2'>
                 <div>
                     <p className='font-semibold text-4xl text-center mb-4'>Elije el Número de Cartas en el Tablero</p>
                 </div>
