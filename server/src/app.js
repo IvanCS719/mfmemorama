@@ -7,6 +7,8 @@ import comodinesRoutes from './routes/comodines.routes.js';
 import elementosRoutes from './routes/elementos_tab.routes.js';
 import frutasRoutes from './routes/frutas_tab.routes.js';
 import tapijulapaRoutes from './routes/tapijulapa.routes.js';
+import path from 'path';
+
 
 const app = express();
 
@@ -22,5 +24,5 @@ app.use(elementosRoutes);
 app.use(frutasRoutes);
 app.use(tapijulapaRoutes);
 
-
+ 
 export default app;
