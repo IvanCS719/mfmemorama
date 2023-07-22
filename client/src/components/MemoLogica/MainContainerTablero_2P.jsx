@@ -58,6 +58,8 @@ function MainContainerTablero_2P() {
   const [turnoPlayer1Mess, setTurnoPlayer1Mess] = useState(true);
   const [turnoPlayer2Mess, setTurnoPlayer2Mess] = useState(false);
 
+  const [jugadorGanadaor, setJugadorGanadaor] = useState("");
+
   //Sistema de puntos
   const [puntos, setPuntos] = useState(0);
   const puntosActualizados = useRef(puntos);
@@ -78,6 +80,9 @@ function MainContainerTablero_2P() {
   const [primerTexto, setPrimerTexto] = useState(false);
   const [sengundoTexto, setSegundoTexto] = useState(false);
   const [mostrarCombo, setMostrarCombo] = useState(false);
+
+  //Modo de Juego
+  const [modoJuego, setModoJuego] = useState(2);
 
   /*función que recibe un arreglo del contenido del memorama duplicado 
   y retorna el mismo arreglo con los elemento mezclados*/
@@ -165,6 +170,8 @@ function MainContainerTablero_2P() {
       calculatePuntos();
       setGano(true);
     }
+    puntosActualizados.current = 0;
+    puntosActualizados_2p.current = 0;
   }, [tarjetasEncontradas]);
 
   const pausarJuego = () => {
@@ -178,9 +185,15 @@ function MainContainerTablero_2P() {
   };
   const calculatePuntos = () => {
     setTotalP(puntosActualizados.current);
+    
+    setTotalP_2p(puntosActualizados_2p.current);
+
+    const ganador = puntosActualizados.current > puntosActualizados_2p.current ? "Rojo" : "Azul";
+    setJugadorGanadaor(ganador)
   }
 
   const handleResetGameClick = () => {
+    establecerNumeroCartas(selectedNumCards);
     iniciarCartasTablero();
     setTarjetasEncontradas(0);
     setPuntos(0);
@@ -280,7 +293,7 @@ function MainContainerTablero_2P() {
         <MemoMessage mostrarMensajes={mostrarMensajes} primerTexto={primerTexto} sengundoTexto={sengundoTexto} />
       <MemoActionMessage mostrarMensajesAction={mostrarMensajesAction} mostrarCombo={mostrarCombo} combo={combo}/>
       <MemoMessageTurno mostrarMensajesTurno={mostrarMensajesTurno} turnoPlayer1Mess={turnoPlayer1Mess} turnoPlayer2Mess={turnoPlayer2Mess}/>
-      <MemoWin gano={gano} puntos={puntos} totalP={totalP} handleResetGameClick={handleResetGameClick} />
+      <MemoWin gano={gano} puntos={puntos} totalP={totalP} totalP_2p={totalP_2p} jugadorGanadaor={jugadorGanadaor} handleResetGameClick={handleResetGameClick} modoJuego={modoJuego}/>
       <MemoPause pauseAlert={pauseAlert} volumeSound={volumeSound} setVolumeSound={setVolumeSound} volumeMusic={volumeMusic} setVolumeMusic={setVolumeMusic} continuarJuego={continuarJuego} handleResetGameClick={handleResetGameClick} />
       <MemoHUB_2P puntos={puntos} puntos_2p={puntos_2p} turnoPlayer1={turnoPlayer1} turnoPlayer2={turnoPlayer2} pausarJuego={pausarJuego} />
       <MemoTablero start={start} contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} selectedNumCards={selectedNumCards}/>
