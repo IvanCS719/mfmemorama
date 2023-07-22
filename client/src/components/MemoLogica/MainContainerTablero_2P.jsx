@@ -254,28 +254,30 @@ function MainContainerTablero_2P() {
         barajearTarjetasCopia.splice(tarjetaSeleccionada.index, 1, tarjetaSeleccionada);
         setBarajearTarjetas(barajearTarjetasCopia);
         setTarjetaSeleccionada(null);
-        setAnimacion(false);
+        if (turnoPlayer1) {
+          setTurnoPlayer1(false);
+          setTurnoPlayer2(true);
+         } else{
+          setTurnoPlayer1(true);
+          setTurnoPlayer2(false);
+         }
+    
+         setMostrarMensajesAction(true);
+         setMostrarMensajesActionTurno(true);
+         setAnimacion(false);
+         const timeout = setTimeout(() => {
+          setMostrarMensajesAction(false);
+          setMostrarMensajesActionTurno(false);
+         }, 1500);
+    
+         return () => {
+           clearTimeout(timeout);
+         };
+        
       }, 1000);
       setCombo(0);
 
-     if (turnoPlayer1) {
-      setTurnoPlayer1(false);
-      setTurnoPlayer2(true);
-     } else{
-      setTurnoPlayer1(true);
-      setTurnoPlayer2(false);
-     }
-
-     setMostrarMensajesAction(true);
-     setMostrarMensajesActionTurno(true);
-     const timeout = setTimeout(() => {
-      setMostrarMensajesAction(false);
-      setMostrarMensajesActionTurno(false);
-     }, 1500);
-
-     return () => {
-       clearTimeout(timeout);
-     };
+     
     }
 
   };

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 function MemoPause({pauseAlert, volumeSound,setVolumeSound, volumeMusic ,setVolumeMusic,handleResetGameClick, continuarJuego}) {
 
     return (
@@ -19,7 +20,7 @@ function MemoPause({pauseAlert, volumeSound,setVolumeSound, volumeMusic ,setVolu
                     <div className="w-full flex justify-center gap-4 mt-6 text-2xl">
                         <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-2xl" onClick={() => handleResetGameClick()}><i className="fa-solid fa-rotate-left"></i></button>
                         <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-2xl" onClick={continuarJuego}><i className="fa-solid fa-play"></i></button>
-                        <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-2xl"><i className="fa-solid fa-house"></i></button>
+                        <Link to="/"><button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-2xl"><i className="fa-solid fa-house"></i></button></Link>
                     </div>
                 </div>
             </div>
