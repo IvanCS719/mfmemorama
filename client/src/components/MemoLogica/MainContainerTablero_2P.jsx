@@ -6,6 +6,7 @@ import MemoWin from '../MemoAlert/MemoWIn';
 import MemoPause from '../MemoAlert/MemoPause';
 import MemoMessage from '../MemoAlert/MemoMessage';
 import MemoActionMessage from '../MemoAlert/MemoActionMessage';
+import MemoMessageTurno from '../MemoAlert/MemoMessageTurno';
 
 import MemoSelectNumCards from '../MemoLayouts/MemoSelectNumCards';
 import MemoSelectTema from '../MemoLayouts/MemoSelectTema';
@@ -54,6 +55,9 @@ function MainContainerTablero_2P() {
   const [turnoPlayer1, setTurnoPlayer1] = useState(true);
   const [turnoPlayer2, setTurnoPlayer2] = useState(false);
 
+  const [turnoPlayer1Mess, setTurnoPlayer1Mess] = useState(true);
+  const [turnoPlayer2Mess, setTurnoPlayer2Mess] = useState(false);
+
   //Sistema de puntos
   const [puntos, setPuntos] = useState(0);
   const puntosActualizados = useRef(puntos);
@@ -70,7 +74,7 @@ function MainContainerTablero_2P() {
   const [pauseAlert, setPauseAlert] = useState(false);
   const [mostrarMensajes, setMostrarMensajes] = useState(false);
   const [mostrarMensajesAction, setMostrarMensajesAction] = useState(false);
-  const [mostrarMensajesActionTurno, setMostrarMensajesActionTurno] = useState(false)
+  const [mostrarMensajesTurno, setMostrarMensajesTurno] = useState(false)
   const [primerTexto, setPrimerTexto] = useState(false);
   const [sengundoTexto, setSegundoTexto] = useState(false);
   const [mostrarCombo, setMostrarCombo] = useState(false);
@@ -146,14 +150,11 @@ function MainContainerTablero_2P() {
       if (combo > 1) {
         setMostrarMensajesAction(true);
         setMostrarCombo(true);
-        const timeout = setTimeout(() => {
+        setTimeout(() => {
           setMostrarMensajesAction(false);
           setMostrarCombo(false);
         }, 1000);
 
-        return () => {
-          clearTimeout(timeout);
-        };
       }
     }
   }, [combo]);
@@ -212,7 +213,6 @@ function MainContainerTablero_2P() {
     await delay(8600);
     setAnimacion(false);
     setMostrarMensajes(false);
-
   }
 
   //función que se llama al hacer click en alguna tarjeta y recibe un objeto (con los datos de la tarjeta)
@@ -249,37 +249,26 @@ function MainContainerTablero_2P() {
     y se seta tarjetaSeleccionada a null y animación a false*/
     else {
       setAnimacion(true);
+               
+      setTurnoPlayer1Mess(!turnoPlayer1);
+      setTurnoPlayer2Mess(!turnoPlayer2);
       setTimeout(() => {
         barajearTarjetasCopia.splice(memoTarjeta.index, 1, memoTarjeta);
         barajearTarjetasCopia.splice(tarjetaSeleccionada.index, 1, tarjetaSeleccionada);
         setBarajearTarjetas(barajearTarjetasCopia);
         setTarjetaSeleccionada(null);
-        if (turnoPlayer1) {
-          setTurnoPlayer1(false);
-          setTurnoPlayer2(true);
-         } else{
-          setTurnoPlayer1(true);
-          setTurnoPlayer2(false);
-         }
-    
-         setMostrarMensajesAction(true);
-         setMostrarMensajesActionTurno(true);
+        
          setAnimacion(false);
-         const timeout = setTimeout(() => {
-          setMostrarMensajesAction(false);
-          setMostrarMensajesActionTurno(false);
+         setTurnoPlayer1(!turnoPlayer1);
+         setTurnoPlayer2(!turnoPlayer2);
+         setMostrarMensajesTurno(true);
+         setTimeout(() => {
+          setMostrarMensajesTurno(false);
          }, 1500);
-    
-         return () => {
-           clearTimeout(timeout);
-         };
         
       }, 1000);
-      setCombo(0);
-
-     
+      setCombo(0);    
     }
-
   };
 
   return (
@@ -289,7 +278,8 @@ function MainContainerTablero_2P() {
       {layoutSelectNumCards? <MemoSelectNumCards successAudio={successAudio} setLayoutSelectNumCards={setLayoutSelectNumCards} setSelectedNumCards={setSelectedNumCards} renderizarCartasYTablero={renderizarCartasYTablero}/> : null}
       {layoutMemoSelectTema || layoutSelectNumCards ? null : <div className='w-full min-h-screen flex items-center justify-center flex-col '>
         <MemoMessage mostrarMensajes={mostrarMensajes} primerTexto={primerTexto} sengundoTexto={sengundoTexto} />
-      <MemoActionMessage mostrarMensajesAction={mostrarMensajesAction} mostrarCombo={mostrarCombo} combo={combo} mostrarMensajesActionTurno={mostrarMensajesActionTurno} turnoPlayer1={turnoPlayer1} turnoPlayer2={turnoPlayer2}/>
+      <MemoActionMessage mostrarMensajesAction={mostrarMensajesAction} mostrarCombo={mostrarCombo} combo={combo}/>
+      <MemoMessageTurno mostrarMensajesTurno={mostrarMensajesTurno} turnoPlayer1Mess={turnoPlayer1Mess} turnoPlayer2Mess={turnoPlayer2Mess}/>
       <MemoWin gano={gano} puntos={puntos} totalP={totalP} handleResetGameClick={handleResetGameClick} />
       <MemoPause pauseAlert={pauseAlert} volumeSound={volumeSound} setVolumeSound={setVolumeSound} volumeMusic={volumeMusic} setVolumeMusic={setVolumeMusic} continuarJuego={continuarJuego} handleResetGameClick={handleResetGameClick} />
       <MemoHUB_2P puntos={puntos} puntos_2p={puntos_2p} turnoPlayer1={turnoPlayer1} turnoPlayer2={turnoPlayer2} pausarJuego={pausarJuego} />
