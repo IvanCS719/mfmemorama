@@ -23,7 +23,7 @@ export const caricaturas_tab = sequelize.define('caricaturas_tab', {
 /*
 async function agregarInformacion() {
     try {
-      const datosParaAgregar = [
+      const datosParaAgregar = [   
         { nombre_imagen: 'BETO.jpg', titulo: 'Beto' },
         { nombre_imagen: 'CANELO.jpg', titulo: 'Canelo' },
         { nombre_imagen: 'LETICIA.jpg', titulo: 'Leticia' },
@@ -55,4 +55,5 @@ async function agregarInformacion() {
   }
   
   // Llama a la función para agregar la información
-  agregarInformacion();*/
+  agregarInformacion();
+  */
