@@ -3,42 +3,55 @@
     aspect-ratio: 1/1;
 }
 
+.memo-tarjeta-inner{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.memo-tarjeta-inner.start{
+    animation: iniciar 8.6s;
+}
+
+
 .memo-tarjeta-front, .memo-tarjeta-back{
     position: absolute;
     width: 100%;
     height: 100%;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    border-radius: 8px;
+    border-radius: 6px;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.memo-tarjeta-inner{
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
+    background-size: cover;
+    background-position: center;
 }
 
 .memo-tarjeta-back{
-    background-color: #EF626C;
     transform: rotateY(180deg);
     box-shadow: 5px 5px 10px 0px rgb(0 0 0 / 50%);
-    font-size: 60px;
 }
 
-.memo-tarjeta-front{
-    background-color: #c2d3d0;
-
-}
-.memo-tarjeta-front-logo{
-    max-width: 86%;
+.memo-tarjeta-front{ 
+    box-shadow: 1px 1px 4px 0px rgb(0 0 0 / 50%);
 }
 
 .memo-tarjeta-Girada{
     transform: rotateY(180deg);
+}
+
+@keyframes iniciar {
+
+    20%,
+    90% {
+        transform: rotateY(180deg);
+    }
+
+    0%,
+    100% {
+        transform: rotateY(0deg);
+    }
 }
