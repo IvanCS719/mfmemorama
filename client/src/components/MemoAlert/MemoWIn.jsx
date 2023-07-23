@@ -12,6 +12,7 @@ function MemoWin({ gano, totalP, puntos, totalTiempo, totalMovimiento, handleRes
                             <span>Puntos</span>
                             <span>{puntos}</span>
                         </div>
+                        
                         <div className="text-2xl w-full flex justify-between px-5">
                             <span>Movimientos</span>
                             <span>{totalMovimiento}</span>
