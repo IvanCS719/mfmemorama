@@ -105,8 +105,7 @@ function MainContainerTablero_2P() {
     fetch(`http://localhost:3000${url}`)
       .then(res => res.json())
       .then((res) => {
-        setRecibirDatos(res);
-        console.log(recibirDatos); // Aquí puedes ver los datos correctamente
+        setRecibirDatos(res); // Aquí puedes ver los datos correctamente
       });
   }
 
