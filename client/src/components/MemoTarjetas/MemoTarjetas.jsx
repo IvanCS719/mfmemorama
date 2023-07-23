@@ -1,8 +1,46 @@
-import './StyleMemoTarjeta.css'
+import './StyleMemoTarjeta.css';
+import { useState, useEffect } from 'react';
 //import logo from 'imgBackPreview/petate.jpg';
 
 //Se reciben las props
-function MemoTarjetas({ memoTarjeta, animacion, handleMemoClick, start }) {
+function MemoTarjetas({ memoTarjeta, animacion, handleMemoClick, start, idRuta }) {
+
+    let rutaImg = '';
+
+    switch (idRuta) {
+        case '/frutas_tab':
+            rutaImg = (`http://localhost:3000/frutas/${memoTarjeta.contenido.nombre_imagen}`);
+            break;
+        
+        case '/caricaturas_tab':
+            rutaImg = (`http://localhost:3000/caricaturas/${memoTarjeta.contenido.nombre_imagen}`);
+            break;
+
+        /*    
+
+        case '/elementos_tab':
+            rutaImg = (`http://localhost:3000/elementos/${memoTarjeta.contenido.nombre_imagen}`);
+            break;
+
+        case '/chontal_espanol':
+            rutaImg = (`http://localhost:3000/chontal_espanol/${memoTarjeta.contenido.nombre_imagen}`);
+            break;
+            
+        case '/centla':
+            rutaImg = (`http://localhost:3000/centla/${memoTarjeta.contenido.nombre_imagen}`);
+            break;
+            
+        case '/tapijulapa':
+            rutaImg = (`http://localhost:3000/tapijulapa/${memoTarjeta.contenido.nombre_imagen}`);
+            break;  
+        
+        case '/centla':
+            rutaImg = (`http://localhost:3000/centla/${memoTarjeta.contenido.nombre_imagen}`);
+            break;     
+    */
+        default:
+            break;
+    }
 
     return (
         //Codicional para poder hacer click en la tarjeta
@@ -12,7 +50,7 @@ function MemoTarjetas({ memoTarjeta, animacion, handleMemoClick, start }) {
                 <div className="memo-tarjeta-front" style={{ backgroundImage: `url(imgFrontPreview/petate.jpg`}}>
                 
                 </div>
-                <div className="memo-tarjeta-back" style={{ backgroundImage: `url(imgBackPreview/${memoTarjeta.contenido})`}}>
+                <div className="memo-tarjeta-back" style={{ backgroundImage: `url(${rutaImg})`}}>
                     
                 </div>
             </div>

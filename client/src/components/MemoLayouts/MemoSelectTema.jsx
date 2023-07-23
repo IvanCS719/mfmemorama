@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-function MemoSelectTema({setLayoutMemoSelectTema}) {
+function MemoSelectTema({setLayoutMemoSelectTema, obtenerDatos, setIdRuta}) {
 
     const temaList = [{ url: '/caricaturas_tab', title: 'Caricaturas', img: '#' },
     { url: '/Chontal_espanol', title: 'Chontal - Español', img: '#' },
@@ -11,6 +11,10 @@ function MemoSelectTema({setLayoutMemoSelectTema}) {
     const temaListPueblosMagicos = [{ url: '/centla', title: 'Centla', img: '#' },
     { url: '/tapijulapa', title: 'Tapijulapa', img: '#' },
     { url: '/teapa', title: 'Teapa', img: '#' }];
+
+
+   
+
 
     return (
         //Se pasan la props a tablero
@@ -25,6 +29,8 @@ function MemoSelectTema({setLayoutMemoSelectTema}) {
                 <div className='grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center md:px-8 lg:px-2 xl:px-9'>
                     {temaList.map((e, i) => <div key={`${i}_${e}`} className='bg-blue-500 w-64 h-64 flex justify-center items-center rounded-2xl cursor-pointer p-2'
                     onClick={()=>{
+                        setIdRuta(e.url);
+                        obtenerDatos(e.url);
                         setLayoutMemoSelectTema(false);
                     }}>
                         <p className='text-3xl font-bold text-center'>{e.title}</p>
@@ -34,6 +40,7 @@ function MemoSelectTema({setLayoutMemoSelectTema}) {
                 <div className='grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center md:px-8 lg:px-2 xl:px-9'>
                     {temaListPueblosMagicos.map((e, i) => <div key={`${i}_${e}`} className='bg-blue-500 w-64 h-64 flex justify-center items-center rounded-2xl cursor-pointer p-2'
                     onClick={()=>{
+                        obtenerDatos(e.url);
                         setLayoutMemoSelectTema(false);
                     }}>
                         <p className='text-3xl font-bold text-center'>{e.title}</p>

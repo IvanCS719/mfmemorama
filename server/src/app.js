@@ -9,11 +9,23 @@ import frutasRoutes from './routes/frutas_tab.routes.js';
 import tapijulapaRoutes from './routes/tapijulapa.routes.js';
 import path from 'path';
 
+import cors from 'cors';
+
 
 const app = express();
 
 //middlewares
 app.use(express.json());
+
+const corsOptions = {
+    origin: '*', // Especifica el dominio permitido (o '*' para permitir cualquier dominio)
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos HTTP permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
+    credentials: true, // Habilita el uso de credenciales (por ejemplo, cookies) en solicitudes
+  };
+  
+  // Middleware para habilitar CORS con opciones personalizadas
+  app.use(cors(corsOptions))
 
 app.use(caricaturasRoutes);
 app.use(centlaRoutes);
@@ -23,6 +35,7 @@ app.use(comodinesRoutes);
 app.use(elementosRoutes);
 app.use(frutasRoutes);
 app.use(tapijulapaRoutes);
+
 
  
 export default app;
