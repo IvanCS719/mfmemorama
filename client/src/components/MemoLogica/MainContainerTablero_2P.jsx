@@ -231,6 +231,10 @@ function MainContainerTablero_2P() {
     await delay(8600);
     setAnimacion(false);
     setMostrarMensajes(false);
+
+    setMostrarMensajesTurno(true);
+    await delay (1500);
+    setMostrarMensajesTurno(false);
   }
 
   //función que se llama al hacer click en alguna tarjeta y recibe un objeto (con los datos de la tarjeta)
