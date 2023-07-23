@@ -207,6 +207,8 @@ function MainContainerTablero_2P() {
     setGano(false);
     setStart(false);
     setPauseAlert(false);
+    puntosActualizados.current = 0;
+    puntosActualizados_2p.current = 0;
     ganasteAudio.pause();
     ganasteAudio.currentTime = 0;
     startGameAudio.play();
