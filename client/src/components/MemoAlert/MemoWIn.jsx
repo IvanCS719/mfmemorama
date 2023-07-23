@@ -4,7 +4,7 @@ function MemoWin({ gano, totalP, puntos, totalTiempo, totalMovimiento, handleRes
     return (
         <div className={`fixed z-30 inset-0 flex items-center justify-center transition-all duration-300 ${gano ? 'opacity-100 scale-100' : 'opacity-0 scale-0 pointer-events-none'}`}>
             <div className='w-full h-full p-4 max-h-full flex justify-center items-center overflow-auto'>
-                <div className="bg-white flex flex-col items-center p-7 rounded-xl text-center font-fontGeneral font-bold text-gray-950">
+                <div className="bg-white  border-solid border-2 border-purple-800  flex flex-col items-center p-7 rounded-xl text-center font-fontGeneral font-bold text-gray-950">
                     {modoJuego == 1 ? <div className='w-full flex flex-col items-center'>
                         <p className="text-5xl">¡NO PUEJ!</p>
                         <p className="text-3xl">¡ENCONTRAJTE TODOJ<br />LOJ PAREJ!</p>

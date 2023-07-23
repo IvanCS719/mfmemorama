@@ -4,7 +4,7 @@ function MemoPause({pauseAlert, volumeSound,setVolumeSound, volumeMusic ,setVolu
     return (
         <div className={`fixed z-30 inset-0 flex items-center justify-center transition-all duration-300 ${pauseAlert ? 'opacity-100 scale-100' : 'opacity-0 scale-0 pointer-events-none'}`}>
             <div className='w-full h-full p-4 max-h-full flex justify-center items-center overflow-auto'>
-                <div className="bg-white flex flex-col items-center p-7 rounded-xl text-center font-fontGeneral font-bold text-gray-950">
+                <div className="bg-white border-solid border-2 border-purple-800  flex flex-col items-center p-7 rounded-xl text-center font-fontGeneral font-bold text-gray-950">
                     <p className="text-5xl">Pausa</p>
                     <div className="text-2xl w-full flex flex-col gap-3 mt-5">
                         <div className="w-full flex items-center justify-between">
