@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 function MemoSelectTema({setLayoutMemoSelectTema, obtenerDatos, setIdRuta}) {
 
-    const temaList = [{ url: '/caricaturas_tab', title: 'Caricaturas', img: '#' },
+    const temaList = [{ url: '/caricaturas_tab', title: 'Caricaturas', img: '#' },/*
     { url: '/Chontal_espanol', title: 'Chontal - Español', img: '#' },
-    { url: '/elementos_tab', title: 'Elementos Tabasqueños', img: '#' },
+    { url: '/elementos_tab', title: 'Elementos Tabasqueños', img: '#' },*/
     { url: '/frutas_tab', title: 'Frutas Tabasqueñas', img: '#' }];
 
     const temaListPueblosMagicos = [{ url: '/centla', title: 'Centla', img: '#' },

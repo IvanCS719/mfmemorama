@@ -110,8 +110,6 @@ function MainContainerTablero_2P() {
       });
   }
 
-  console.log(recibirDatos);
-
   const iniciarCartasTablero = () => {
     //Se llama a la función mezclarArray, pasando un arreglo que concatena el contenido del memorama dos vez
     //el retorno se pasa al arreglo mezclarContenidoList
@@ -196,7 +194,7 @@ function MainContainerTablero_2P() {
     
     setTotalP_2p(puntosActualizados_2p.current);
 
-    const ganador = puntosActualizados.current > puntosActualizados_2p.current ? "Rojo" : "Azul";
+    const ganador = puntosActualizados.current > puntosActualizados_2p.current ? "Rojo" : puntosActualizados.current < puntosActualizados_2p.current ? "Azul" : "Empate";
     setJugadorGanadaor(ganador)
   }
 
@@ -296,7 +294,7 @@ function MainContainerTablero_2P() {
     //Se pasan la props a tablero
     <div className='p-2'>
       {layoutMemoSelectTema ? <MemoSelectTema setIdRuta={setIdRuta} obtenerDatos={obtenerDatos} successAudio={successAudio} setLayoutMemoSelectTema={setLayoutMemoSelectTema}/> : null}
-      {layoutSelectNumCards? <MemoSelectNumCards setLayoutMemoSelectTema={setLayoutMemoSelectTema} successAudio={successAudio} setLayoutSelectNumCards={setLayoutSelectNumCards} setSelectedNumCards={setSelectedNumCards} renderizarCartasYTablero={renderizarCartasYTablero}/> : null}
+      {layoutSelectNumCards? <MemoSelectNumCards tamanoArreglo={recibirDatos.length} setLayoutMemoSelectTema={setLayoutMemoSelectTema} successAudio={successAudio} setLayoutSelectNumCards={setLayoutSelectNumCards} setSelectedNumCards={setSelectedNumCards} renderizarCartasYTablero={renderizarCartasYTablero}/> : null}
       {layoutMemoSelectTema || layoutSelectNumCards ? null : <div className='w-full min-h-screen flex items-center justify-center lg:justify-normal flex-col '>
         <MemoMessage mostrarMensajes={mostrarMensajes} primerTexto={primerTexto} sengundoTexto={sengundoTexto} />
       <MemoActionMessage mostrarMensajesAction={mostrarMensajesAction} mostrarCombo={mostrarCombo} combo={combo}/>
