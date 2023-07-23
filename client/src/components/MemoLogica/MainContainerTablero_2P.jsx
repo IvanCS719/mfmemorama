@@ -105,8 +105,7 @@ function MainContainerTablero_2P() {
     fetch(`http://localhost:3000${url}`)
       .then(res => res.json())
       .then((res) => {
-        setRecibirDatos(res);
-        console.log(recibirDatos); // Aquí puedes ver los datos correctamente
+        setRecibirDatos(res); // Aquí puedes ver los datos correctamente
       });
   }
 
@@ -292,10 +291,10 @@ function MainContainerTablero_2P() {
 
   return (
     //Se pasan la props a tablero
-    <div className='p-2'>
+    <div className='px-2'>
       {layoutMemoSelectTema ? <MemoSelectTema setIdRuta={setIdRuta} obtenerDatos={obtenerDatos} successAudio={successAudio} setLayoutMemoSelectTema={setLayoutMemoSelectTema}/> : null}
       {layoutSelectNumCards? <MemoSelectNumCards tamanoArreglo={recibirDatos.length} setLayoutMemoSelectTema={setLayoutMemoSelectTema} successAudio={successAudio} setLayoutSelectNumCards={setLayoutSelectNumCards} setSelectedNumCards={setSelectedNumCards} renderizarCartasYTablero={renderizarCartasYTablero}/> : null}
-      {layoutMemoSelectTema || layoutSelectNumCards ? null : <div className='w-full min-h-screen flex items-center justify-center lg:justify-normal flex-col '>
+      {layoutMemoSelectTema || layoutSelectNumCards ? null : <div className='w-full min-h-screen flex items-center justify-center flex-col '>
         <MemoMessage mostrarMensajes={mostrarMensajes} primerTexto={primerTexto} sengundoTexto={sengundoTexto} />
       <MemoActionMessage mostrarMensajesAction={mostrarMensajesAction} mostrarCombo={mostrarCombo} combo={combo}/>
       <MemoMessageTurno mostrarMensajesTurno={mostrarMensajesTurno} turnoPlayer1Mess={turnoPlayer1Mess} turnoPlayer2Mess={turnoPlayer2Mess}/>

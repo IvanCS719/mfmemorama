@@ -6,7 +6,7 @@ function MemoMainMenu() {
 
   return (
     //Se pasan la props a tablero
-    <main className='w-full min-h-screen flex items-center justify-between flex-col p-2 font-fontGeneral'>
+    <main className='w-full min-h-screen flex items-center justify-between md:justify-around lg:justify-between flex-col p-2 font-fontGeneral'>
       <div>
         <p className='font-bold text-5xl text-center mb-2'>MEMORAMA</p>
         <img src="logoMainMenu.png" alt="" className='w-96' />
