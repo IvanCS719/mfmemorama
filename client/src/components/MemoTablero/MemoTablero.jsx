@@ -3,7 +3,7 @@ import MemoTarjetas from '../MemoTarjetas/MemoTarjetas';
 //import './StyleMemoTablero.css';
 
 //Se reciben la props
-function MemoTablero({ contenidoBarajeado, animacion, handleMemoClick, start, selectedNumCards }) {
+function MemoTablero({ contenidoBarajeado, animacion, handleMemoClick, start, selectedNumCards, idRuta }) {
 
      // Estado para almacenar el tamaño de la ventana
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -137,7 +137,7 @@ function MemoTablero({ contenidoBarajeado, animacion, handleMemoClick, start, se
                     //sea mapea el arreglo con el contenido de la tarjetas, para crear cada tarjeta
                     contenidoBarajeado.map((item, i) => {
                         //Se pasa la props correspondientes
-                        return <MemoTarjetas key={`${i}_${item}`} memoTarjeta={item} animacion={animacion} handleMemoClick={handleMemoClick} start={start} />
+                        return <MemoTarjetas key={`${i}_${item}`} memoTarjeta={item} animacion={animacion} handleMemoClick={handleMemoClick} start={start} idRuta={idRuta}/>
                     })
                 }
             </div>

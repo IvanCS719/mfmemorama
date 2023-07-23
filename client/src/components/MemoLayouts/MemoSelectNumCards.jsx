@@ -1,14 +1,32 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-function MemoSelectNumCards({setLayoutSelectNumCards, setSelectedNumCards, renderizarCartasYTablero, setLayoutMemoSelectTema}) {
-
-    const numCards = [{ numCards: 3, totalCards: 6 },
+function MemoSelectNumCards({tamanoArreglo, setLayoutSelectNumCards, setSelectedNumCards, renderizarCartasYTablero, setLayoutMemoSelectTema}) {
+    const numCards = [];
+    if (tamanoArreglo >= 3) {
+        numCards.push({ numCards: 3, totalCards: 6 });
+    }
+    if (tamanoArreglo >= 6) {
+        numCards.push({ numCards: 6, totalCards: 12 });
+    }
+    if (tamanoArreglo >= 10) {
+        numCards.push({ numCards: 10, totalCards: 20 });
+    }
+    if (tamanoArreglo >= 15) {
+        numCards.push({ numCards: 15, totalCards: 30 });
+    }
+    if (tamanoArreglo >= 28) {
+        numCards.push({ numCards: 28, totalCards: 56 });
+    }
+    if (tamanoArreglo >= 36) {
+        numCards.push({ numCards: 36, totalCards: 72 });
+    }
+    /*const numCards = [{ numCards: 3, totalCards: 6 },
     { numCards: 6, totalCards: 12 },
     { numCards: 10, totalCards: 20 },
     { numCards: 15, totalCards: 30 },
     { numCards: 28, totalCards: 56 },
-    { numCards: 36, totalCards: 72 }];
+    { numCards: 36, totalCards: 72 }];*/
 
     return (
         //Se pasan la props a tablero

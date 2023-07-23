@@ -26,16 +26,16 @@ function MemoWin({ gano, totalP, puntos, totalTiempo, totalMovimiento, handleRes
                         </div>
                     </div> : modoJuego == 2 ? <div className='w-full flex flex-col items-center'>
                         <p className="text-5xl">¡NO PUEJ!</p>
-                        <p className="text-3xl">¡{jugadorGanadaor} Ganó!</p>
+                        <p className="text-3xl">{jugadorGanadaor == "Empate" ? "¡Hubo un Empate!" : `¡${jugadorGanadaor} Ganó!`}</p>
                         
                         <div className={`w-full flex ${jugadorGanadaor == "Rojo" ? 'flex-col' : 'flex-col-reverse'} items-center gap-2 mt-3 text-white`}>
                         <div className="bg-red-600 max-w-max px-10 py-1 flex flex-col rounded-lg">
                             <span className="text-2xl">Total:</span>
-                            <span className={`${jugadorGanadaor == "Rojo" ? 'text-5xl' : 'text-3xl'}`}>{totalP}</span>
+                            <span className={`${jugadorGanadaor == "Rojo" || jugadorGanadaor == "Empate" ? 'text-5xl' : 'text-3xl'}`}>{totalP}</span>
                         </div>
                         <div className="bg-blue-600 max-w-max px-10 py-1 flex flex-col rounded-lg">
                             <span className="text-2xl">Total:</span>
-                            <span className={`${jugadorGanadaor == "Azul" ? 'text-5xl' : 'text-3xl'}`}>{totalP_2p}</span>
+                            <span className={`${jugadorGanadaor == "Azul" || jugadorGanadaor == "Empate" ? 'text-5xl' : 'text-3xl'}`}>{totalP_2p}</span>
                         </div>
                         </div>
                     </div> : null}

@@ -17,11 +17,8 @@ import sonidoGirarTarjeta from '../../assets/sounds/flipCard.mp3';
 import sonidoGanaste from '../../assets/sounds/win.mp3';
 
 //Arreglo local con contenido de prueba para cada tarjeta
-const contenidoList = ['choco_1.jpg', 'choco_2.jpg', 'choco_3.jpg', 'choco_4.jpg', 'choco_5.jpg', 'choco_6.jpg',
-'choco_7.jpg', 'choco_8.jpg','choco_9.jpg','choco_10.jpg', 'choco_11.jpg', 'choco_12.jpg','choco_13.jpg', 'gato.jpg',
-'perro.jpg', 'choco_1.jpg', 'choco_2.jpg', 'choco_3.jpg', 'choco_4.jpg', 'choco_5.jpg', 'choco_6.jpg',
-'choco_7.jpg', 'choco_8.jpg','choco_9.jpg','choco_10.jpg', 'choco_11.jpg', 'choco_12.jpg','choco_13.jpg', 'choco_1.jpg', 'choco_2.jpg', 'choco_3.jpg', 'choco_4.jpg', 'choco_5.jpg', 'choco_6.jpg',
-'choco_7.jpg', 'choco_8.jpg'];
+const obtenerDatos = [];
+
 
 let numeroDeCartasEstablecido = [];
 
@@ -33,6 +30,8 @@ const successAudio = new Audio(sonidoParEncontrado);
 const girarTarjetaAudio = new Audio(sonidoGirarTarjeta);
 
 function MainContainerTablero_2P() {
+  const [idRuta, setIdRuta] = useState('');
+  const [recibirDatos, setRecibirDatos] = useState([]);
   //Layouts Visbles
   const [layoutMemoSelectTema, setLayoutMemoSelectTema] = useState(true);
   const [layoutSelectNumCards, setLayoutSelectNumCards] = useState(true);
@@ -98,8 +97,17 @@ function MainContainerTablero_2P() {
   }
 
   const establecerNumeroCartas = (numCards) => {
-    const mezclarCartas = mezclarArray(contenidoList);
+    const mezclarCartas = mezclarArray(recibirDatos);
     numeroDeCartasEstablecido = mezclarCartas.slice(0,numCards);
+  }
+
+  const obtenerDatos = (url) => {
+    fetch(`http://localhost:3000${url}`)
+      .then(res => res.json())
+      .then((res) => {
+        setRecibirDatos(res);
+        console.log(recibirDatos); // Aquí puedes ver los datos correctamente
+      });
   }
 
   const iniciarCartasTablero = () => {
@@ -170,8 +178,6 @@ function MainContainerTablero_2P() {
       calculatePuntos();
       setGano(true);
     }
-    puntosActualizados.current = 0;
-    puntosActualizados_2p.current = 0;
   }, [tarjetasEncontradas]);
 
   const pausarJuego = () => {
@@ -188,7 +194,7 @@ function MainContainerTablero_2P() {
     
     setTotalP_2p(puntosActualizados_2p.current);
 
-    const ganador = puntosActualizados.current > puntosActualizados_2p.current ? "Rojo" : "Azul";
+    const ganador = puntosActualizados.current > puntosActualizados_2p.current ? "Rojo" : puntosActualizados.current < puntosActualizados_2p.current ? "Azul" : "Empate";
     setJugadorGanadaor(ganador)
   }
 
@@ -287,8 +293,8 @@ function MainContainerTablero_2P() {
   return (
     //Se pasan la props a tablero
     <div className='p-2'>
-      {layoutMemoSelectTema ? <MemoSelectTema successAudio={successAudio} setLayoutMemoSelectTema={setLayoutMemoSelectTema}/> : null}
-      {layoutSelectNumCards? <MemoSelectNumCards setLayoutMemoSelectTema={setLayoutMemoSelectTema} successAudio={successAudio} setLayoutSelectNumCards={setLayoutSelectNumCards} setSelectedNumCards={setSelectedNumCards} renderizarCartasYTablero={renderizarCartasYTablero}/> : null}
+      {layoutMemoSelectTema ? <MemoSelectTema setIdRuta={setIdRuta} obtenerDatos={obtenerDatos} successAudio={successAudio} setLayoutMemoSelectTema={setLayoutMemoSelectTema}/> : null}
+      {layoutSelectNumCards? <MemoSelectNumCards tamanoArreglo={recibirDatos.length} setLayoutMemoSelectTema={setLayoutMemoSelectTema} successAudio={successAudio} setLayoutSelectNumCards={setLayoutSelectNumCards} setSelectedNumCards={setSelectedNumCards} renderizarCartasYTablero={renderizarCartasYTablero}/> : null}
       {layoutMemoSelectTema || layoutSelectNumCards ? null : <div className='w-full min-h-screen flex items-center justify-center lg:justify-normal flex-col '>
         <MemoMessage mostrarMensajes={mostrarMensajes} primerTexto={primerTexto} sengundoTexto={sengundoTexto} />
       <MemoActionMessage mostrarMensajesAction={mostrarMensajesAction} mostrarCombo={mostrarCombo} combo={combo}/>
@@ -296,7 +302,7 @@ function MainContainerTablero_2P() {
       <MemoWin gano={gano} puntos={puntos} totalP={totalP} totalP_2p={totalP_2p} jugadorGanadaor={jugadorGanadaor} handleResetGameClick={handleResetGameClick} modoJuego={modoJuego}/>
       <MemoPause pauseAlert={pauseAlert} volumeSound={volumeSound} setVolumeSound={setVolumeSound} volumeMusic={volumeMusic} setVolumeMusic={setVolumeMusic} continuarJuego={continuarJuego} handleResetGameClick={handleResetGameClick} />
       <MemoHUB_2P puntos={puntos} puntos_2p={puntos_2p} turnoPlayer1={turnoPlayer1} turnoPlayer2={turnoPlayer2} pausarJuego={pausarJuego} />
-      <MemoTablero start={start} contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} selectedNumCards={selectedNumCards}/>
+      <MemoTablero idRuta={idRuta} start={start} contenidoBarajeado={barajearTarjetas} animacion={animacion} handleMemoClick={handleMemoClick} selectedNumCards={selectedNumCards}/>
         
         </div>}
     </div>
