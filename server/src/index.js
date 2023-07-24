@@ -22,6 +22,19 @@ const __dirname = dirname(__filename);
 // Configurar la ruta estática para los archivos en la carpeta "public"
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Configurar la ruta estática para los archivos en la carpeta "public"
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+// Ruta para servir la aplicación React desde el home "/"
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+});
+
+// Ruta catch-all para redirigir todas las demás rutas a la página principal de React
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+});
+
 async function main() {
   try {
       await sequelize.sync();
